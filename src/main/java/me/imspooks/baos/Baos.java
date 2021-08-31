@@ -13,7 +13,7 @@ import java.lang.reflect.InvocationTargetException;
  */
 public class Baos {
 
-    public static <T extends BaosDeserializer> T read(byte[] bytes, Class<T> baosClass) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+    public static <T extends BaosDeserializer> T read(byte[] bytes, Class<T> baosClass) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException, IOException {
         Constructor<T> constructor = baosClass.getConstructor();
         T instance = constructor.newInstance();
 
@@ -21,12 +21,12 @@ public class Baos {
         return instance;
     }
 
-    public static <T extends BaosDeserializer> T read(byte[] bytes, T bausObject) {
-        bausObject.deserialize(new BaosInputStream(new DataInputStream(new ByteArrayInputStream(bytes))));
-        return bausObject;
+    public static <T extends BaosDeserializer> T read(byte[] bytes, T baosObject) throws IOException {
+        baosObject.deserialize(new BaosInputStream(new DataInputStream(new ByteArrayInputStream(bytes))));
+        return baosObject;
     }
 
-    public static byte[] write(BaosSerializer baosObject) {
+    public static byte[] write(BaosSerializer baosObject) throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         baosObject.serialize(new BaosOutputStream(new DataOutputStream(outputStream)));
         return outputStream.toByteArray();
