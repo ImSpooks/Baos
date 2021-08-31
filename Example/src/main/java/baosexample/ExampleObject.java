@@ -1,8 +1,6 @@
 package baosexample;
 
-import lombok.Data;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import me.imspooks.baos.BaosDeserializer;
 import me.imspooks.baos.BaosSerializer;

@@ -3,13 +3,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>baos</artifactId>
         <groupId>me.imspooks.baos</groupId>
+        <artifactId>parent</artifactId>
         <version>0.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>Example</artifactId>
+    <artifactId>example</artifactId>
 
     <dependencies>
         <dependency>
@@ -54,10 +54,11 @@
                         </goals>
 
                         <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
                             <relocations>
                                 <relocation>
                                     <pattern>me.imspooks.baos</pattern>
-                                    <shadedPattern>me.imspooks.example.lib.baos</shadedPattern>
+                                    <shadedPattern>me.imspooks.example.lib.me.imspooks.baos</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>

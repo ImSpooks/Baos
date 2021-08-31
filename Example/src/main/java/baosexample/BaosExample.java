@@ -2,8 +2,6 @@ package baosexample;
 
 import me.imspooks.baos.Baos;
 
-import java.io.IOException;
-
 /**
  * Created by Nick on 31 aug. 2021.
  * Copyright © ImSpooks
