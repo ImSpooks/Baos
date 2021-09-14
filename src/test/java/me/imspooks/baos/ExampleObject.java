@@ -1,20 +1,18 @@
-package baosexample;
+package me.imspooks.baos;
 
 import lombok.Getter;
 import lombok.Setter;
-import me.imspooks.baos.BaosDeserializer;
-import me.imspooks.baos.BaosSerializer;
 import me.imspooks.baos.io.BaosInputStream;
 import me.imspooks.baos.io.BaosOutputStream;
 
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Created by Nick on 31 aug. 2021.
  * Copyright © ImSpooks
  */
-@Getter
-@Setter
+@Getter @Setter
 public class ExampleObject implements BaosSerializer, BaosDeserializer {
 
     private int id;
@@ -52,5 +50,20 @@ public class ExampleObject implements BaosSerializer, BaosDeserializer {
                 ", name='" + name + '\'' +
                 ", timestamp=" + timestamp +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ExampleObject)) return false;
+        ExampleObject that = (ExampleObject) o;
+        return id == that.id &&
+                timestamp == that.timestamp &&
+                Objects.equals(name, that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, timestamp);
     }
 }
