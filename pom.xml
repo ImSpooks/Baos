@@ -6,7 +6,7 @@
 
     <groupId>me.imspooks.baos</groupId>
     <artifactId>baos</artifactId>
-    <version>0.1</version>
+    <version>0.2</version>
 
     <name>Baos</name>
     <description>Byte Array Object Serializer Library</description>
