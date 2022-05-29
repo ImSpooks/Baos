@@ -67,6 +67,82 @@ public class BaosInputStream {
         return new UUID(most, least);
     }
 
+    public List<String> readStringList(Charset charset) throws IOException {
+        int size = this.readInt();
+        List<String> list = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            list.add(this.readString(charset));
+        }
+        return list;
+    }
+
+    public List<String> readStringList() throws IOException {
+        return this.readStringList(StandardCharsets.UTF_8);
+    }
+
+    public List<Byte> readByteList() throws IOException {
+        int size = this.readInt();
+        List<Byte> list = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            list.add((byte) this.read());
+        }
+        return list;
+    }
+
+    public List<Short> readShortList() throws IOException {
+        int size = this.readInt();
+        List<Short> list = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            list.add(this.readShort());
+        }
+        return list;
+    }
+
+    public List<Integer> readIntegerList() throws IOException {
+        int size = this.readInt();
+        List<Integer> list = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            list.add(this.readInt());
+        }
+        return list;
+    }
+
+    public List<Long> readLongList() throws IOException {
+        int size = this.readInt();
+        List<Long> list = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            list.add(this.readLong());
+        }
+        return list;
+    }
+
+    public List<Float> readFloatList() throws IOException {
+        int size = this.readInt();
+        List<Float> list = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            list.add(this.readFloat());
+        }
+        return list;
+    }
+
+    public List<Double> readDoubleList() throws IOException {
+        int size = this.readInt();
+        List<Double> list = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            list.add(this.readDouble());
+        }
+        return list;
+    }
+
+    public List<UUID> readUUIDList() throws IOException {
+        int size = this.readInt();
+        List<UUID> list = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            list.add(this.readUUID());
+        }
+        return list;
+    }
+
     public Object readTypePrefixed() throws IOException {
         int id = this.read();
         if (id == -1) {

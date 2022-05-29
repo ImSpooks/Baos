@@ -67,6 +67,66 @@ public class BaosOutputStream {
         this.writeLong(uuid.getLeastSignificantBits());
     }
 
+    public void writeStringList(List<String> list, Charset charset) throws IOException {
+        this.writeInt(list.size());
+        for (String s : list) {
+            this.writeString(s, charset);
+        }
+    }
+
+    public void writeStringList(List<String> list) throws IOException {
+        this.writeStringList(list, StandardCharsets.UTF_8);
+    }
+
+    public void writeByteList(List<Byte> list) throws IOException {
+        this.writeInt(list.size());
+        for (byte value : list) {
+            this.write(value);
+        }
+    }
+
+    public void writeShortList(List<Short> list) throws IOException {
+        this.writeInt(list.size());
+        for (short value : list) {
+            this.writeShort(value);
+        }
+    }
+
+    public void writeIntegerList(List<Integer> list) throws IOException {
+        this.writeInt(list.size());
+        for (int value : list) {
+            this.writeInt(value);
+        }
+    }
+
+    public void writeLongList(List<Long> list) throws IOException {
+        this.writeInt(list.size());
+        for (long value : list) {
+            this.writeLong(value);
+        }
+    }
+
+    public void writeFloatList(List<Float> list) throws IOException {
+        this.writeInt(list.size());
+        for (float value : list) {
+            this.writeFloat(value);
+        }
+    }
+
+    public void writeDoubleList(List<Double> list) throws IOException {
+        this.writeInt(list.size());
+        for (double value : list) {
+            this.writeDouble(value);
+        }
+    }
+
+    public void writeUUIDList(List<UUID> list) throws IOException {
+        this.writeInt(list.size());
+        for (UUID value : list) {
+            this.writeUUID(value);
+        }
+    }
+
     public void writeTypePrefixed(Object o) throws IOException {
         if (o == null) {
             this.write(-1);
