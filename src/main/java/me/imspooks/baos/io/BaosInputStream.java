@@ -4,7 +4,9 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by Nick on 05 aug. 2021.
@@ -143,11 +145,21 @@ public class BaosInputStream {
         return list;
     }
 
-    public Object readTypePrefixed() throws IOException {
+    /**
+     * Uses {@link BaosTypedObject} registered by {@link BaosTypeAdapters#addTypeAdapter(Class, BaosTypedObject)}
+     */
+    public <T> T readTypePrefixed(Class<T> clazz) throws IOException {
         int id = this.read();
         if (id == -1) {
             return null;
-        } else if (id == 0) {
+        } else {
+            BaosTypedObject<T> object = BaosTypeAdapters.getFromClass(clazz);
+            if (object == null) {
+                throw new IllegalArgumentException("No type adapter found with index " + id);
+            }
+            return object.read(this);
+        }
+        /*else if (id == 0) {
             return this.readString();
         } else if (id == 1) {
             return this.readInt();
@@ -181,7 +193,7 @@ public class BaosInputStream {
             return map;
         } else {
             throw new UnsupportedOperationException("Unknown ID " + id);
-        }
+        }*/
     }
 
 

@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -127,10 +126,21 @@ public class BaosOutputStream {
         }
     }
 
+    /**
+     * Uses {@link BaosTypedObject} registered by {@link BaosTypeAdapters#addTypeAdapter(Class, BaosTypedObject)}
+     */
     public void writeTypePrefixed(Object o) throws IOException {
         if (o == null) {
-            this.write(-1);
-        } else if (o instanceof String) {
+            this.write(0);
+        } else {
+            this.write(1);
+            BaosTypedObject<?> object = BaosTypeAdapters.getFromClass(o.getClass());
+            if (object == null) {
+                throw new IllegalArgumentException("No type adapter found for class " + o.getClass());
+            }
+            object.write0(o, this);
+        }
+        /* else if (o instanceof String) {
             this.write(0);
             this.writeString((String) o);
         } else if (o instanceof Integer) {
@@ -171,7 +181,7 @@ public class BaosOutputStream {
         }
         else {
             throw new UnsupportedOperationException("Unknown prefix type " + o.getClass().getSimpleName());
-        }
+        }*/
     }
 
     public DataOutputStream getOut() {
