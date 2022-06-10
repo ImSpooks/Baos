@@ -1,5 +1,9 @@
 package me.imspooks.baos.io;
 
+import me.imspooks.baos.Pair;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -141,6 +145,30 @@ public class BaosInputStream {
             list.add(this.readUUID());
         }
         return list;
+    }
+
+    public Pair<Location, Location> readLocationPair() throws IOException {
+        return new Pair<>(readLocation(), readLocation());
+    }
+
+    public Location readLocation() throws IOException {
+        UUID uuid = this.readUUID();
+        double x = this.readDouble();
+        double y = this.readDouble();
+        double z = this.readDouble();
+        return new Location(Bukkit.getWorld(uuid), x, y, z);
+    }
+
+    public Pair<Location, Location> readBlockLocationPair() throws IOException {
+        return new Pair<>(readBlockLocation(), readBlockLocation());
+    }
+
+    public Location readBlockLocation() throws IOException {
+        UUID uuid = this.readUUID();
+        int x = this.readInt();
+        int y = this.readInt();
+        int z = this.readInt();
+        return new Location(Bukkit.getWorld(uuid), x, y, z);
     }
 
     public Object readTypePrefixed() throws IOException {

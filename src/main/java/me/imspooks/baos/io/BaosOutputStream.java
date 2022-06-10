@@ -1,5 +1,8 @@
 package me.imspooks.baos.io;
 
+import org.bukkit.Location;
+import org.bukkit.block.Block;
+
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -127,6 +130,38 @@ public class BaosOutputStream {
         }
     }
 
+    public void writeBlockLocation(Block b) throws IOException {
+        this.writeBlockLocation(b.getLocation());
+    }
+
+    public void writeBlockLocation(Location l) throws IOException {
+        this.writeUUID(l.getWorld().getUID());
+        this.writeInt(l.getBlockX());
+        this.writeInt(l.getBlockX());
+        this.writeInt(l.getBlockX());
+    }
+
+    public void writeBlockLocationPair(Block b1, Block b2) throws IOException {
+        writeBlockLocationPair(b1.getLocation(), b2.getLocation());
+    }
+
+    public void writeBlockLocationPair(Location l1, Location l2) throws IOException {
+        writeBlockLocation(l1);
+        writeBlockLocation(l2);
+    }
+
+    public void writeLocation(Location l) throws IOException {
+        this.writeUUID(l.getWorld().getUID());
+        this.writeDouble(l.getX());
+        this.writeDouble(l.getY());
+        this.writeDouble(l.getZ());
+    }
+
+    public void writeLocationPair(Location l1, Location l2) throws IOException {
+        writeLocation(l1);
+        writeLocation(l2);
+    }
+
     public void writeTypePrefixed(Object o) throws IOException {
         if (o == null) {
             this.write(-1);
@@ -168,8 +203,7 @@ public class BaosOutputStream {
                 this.writeTypePrefixed(entry.getKey());
                 this.writeTypePrefixed(entry.getValue());
             }
-        }
-        else {
+        } else {
             throw new UnsupportedOperationException("Unknown prefix type " + o.getClass().getSimpleName());
         }
     }

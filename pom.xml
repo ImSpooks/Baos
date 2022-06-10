@@ -6,7 +6,7 @@
 
     <groupId>me.imspooks.baos</groupId>
     <artifactId>baos</artifactId>
-    <version>0.2</version>
+    <version>0.3</version>
 
     <name>Baos</name>
     <description>Byte Array Object Serializer Library</description>
@@ -30,7 +30,14 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.20</version>
+            <version>1.18.24</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>1.16.5-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
