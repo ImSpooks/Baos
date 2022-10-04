@@ -127,6 +127,17 @@ public class BaosOutputStream {
     }
 
     /**
+     * Uses {@link BaosTypedObject} to serialize the list's contents
+     * Objects in the list must have a registered Type adapter
+     */
+    public <T> void writeList(List<T> list) throws IOException {
+        this.writeInt(list.size());
+        for (T t : list) {
+            writeTypePrefixed(t);
+        }
+    }
+
+    /**
      * Uses {@link BaosTypedObject} registered by {@link BaosTypeAdapters#addTypeAdapter(Class, BaosTypedObject)}
      */
     public void writeTypePrefixed(Object o) throws IOException {
