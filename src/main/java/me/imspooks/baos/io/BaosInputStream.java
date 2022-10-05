@@ -146,6 +146,20 @@ public class BaosInputStream {
     }
 
     /**
+     * Attempts to read a list of the passed in object.
+     * Passed in object must have a Type adapter registered in {@link BaosTypeAdapters}
+     */
+    public <T> List<T> readList(Class<T> obj) throws IOException {
+        int size = this.readInt();
+        List<T> list = new ArrayList<>(size);
+
+        for (int i = 0; i < size; i++) {
+            list.add(readTypePrefixed(obj));
+        }
+        return list;
+    }
+
+    /**
      * Uses {@link BaosTypedObject} registered by {@link BaosTypeAdapters#addTypeAdapter(Class, BaosTypedObject)}
      */
     public <T> T readTypePrefixed(Class<T> clazz) throws IOException {
