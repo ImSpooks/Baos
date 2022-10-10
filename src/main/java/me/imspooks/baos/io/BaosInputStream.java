@@ -4,9 +4,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by Nick on 05 aug. 2021.
@@ -26,6 +24,18 @@ public class BaosInputStream {
 
     public int read() throws IOException {
         return this.in.readByte();
+    }
+
+    public Number readNumber() throws IOException {
+        byte prefix = in.readByte();
+
+        switch (prefix)
+        {
+            case 0: return in.readInt();
+            case 1: return in.readDouble();
+            case 2: return in.readFloat();
+            default: return in.readInt();
+        }
     }
 
     public boolean readBoolean() throws IOException {
@@ -143,6 +153,24 @@ public class BaosInputStream {
             list.add(this.readUUID());
         }
         return list;
+    }
+
+    public Map<String, String> readStringMap() throws IOException{
+        int size = this.readInt();
+        Map<String, String> map = new HashMap<>();
+        for (int i = 0; i < size; i++) {
+            map.put(this.readString(), this.readString());
+        }
+        return map;
+    }
+
+    public <T> Map<String, T> readGenericStringMap(Class<T> obj) throws IOException{
+        int size = this.readInt();
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < size; i++) {
+            map.put(this.readString(), this.readTypePrefixed(obj));
+        }
+        return map;
     }
 
     /**

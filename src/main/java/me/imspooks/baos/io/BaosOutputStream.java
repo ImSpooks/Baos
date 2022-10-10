@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -25,6 +26,21 @@ public class BaosOutputStream {
 
     public void write(int byt) throws IOException {
         this.out.writeByte(byt);
+    }
+
+    public void writeNumber(Number number) throws IOException {
+        if (number instanceof Integer){
+            this.write((byte) 0);
+            this.writeInt((int) number);
+        }
+        if (number instanceof Double){
+            this.write((byte) 1);
+            this.writeDouble((double) number);
+        }
+        if (number instanceof Float){
+            this.write((byte) 2);
+            this.writeFloat((float) number);
+        }
     }
 
     public void writeBoolean(boolean b) throws IOException {
@@ -123,6 +139,24 @@ public class BaosOutputStream {
         this.writeInt(list.size());
         for (UUID value : list) {
             this.writeUUID(value);
+        }
+    }
+
+    public void writeStringMap(Map<String, String> map) throws IOException {
+        this.writeInt(map.size());
+
+        for (String key : map.keySet()) {
+            this.writeString(key);
+            this.writeString(map.get(key));
+        }
+    }
+
+    public <T> void writeGenericStringMap(Map<String, T> map) throws IOException {
+        this.writeInt(map.size());
+
+        for (String key : map.keySet()) {
+            this.writeString(key);
+            this.writeTypePrefixed(map.get(key));
         }
     }
 
