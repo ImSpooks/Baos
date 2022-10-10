@@ -75,6 +75,8 @@ public class BaosOutputStream {
         byte[] bytes = s.getBytes(charset);
         this.writeInt(bytes.length);
         this.write(bytes);
+
+        //test
     }
 
     public void writeUUID(UUID uuid) throws IOException {
