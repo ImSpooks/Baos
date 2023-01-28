@@ -29,12 +29,15 @@ public class BaosInputStream {
     public Number readNumber() throws IOException {
         byte prefix = in.readByte();
 
-        switch (prefix)
-        {
-            case 0: return in.readInt();
-            case 1: return in.readDouble();
-            case 2: return in.readFloat();
-            default: return in.readInt();
+        switch (prefix) {
+            case 0:
+                return in.readInt();
+            case 1:
+                return in.readDouble();
+            case 2:
+                return in.readFloat();
+            default:
+                return in.readInt();
         }
     }
 
@@ -155,7 +158,9 @@ public class BaosInputStream {
         return list;
     }
 
-    public Map<String, String> readStringMap() throws IOException{
+
+
+    public Map<String, String> readStringMap() throws IOException {
         int size = this.readInt();
         Map<String, String> map = new HashMap<>();
         for (int i = 0; i < size; i++) {
@@ -164,7 +169,7 @@ public class BaosInputStream {
         return map;
     }
 
-    public <T> Map<String, T> readGenericStringMap(Class<T> obj) throws IOException{
+    public <T> Map<String, T> readGenericStringMap(Class<T> obj) throws IOException {
         int size = this.readInt();
         Map<String, T> map = new HashMap<>();
         for (int i = 0; i < size; i++) {

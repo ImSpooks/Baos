@@ -1,5 +1,7 @@
 package me.imspooks.baos.io;
 
+import me.imspooks.baos.io.adapters.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -11,6 +13,18 @@ import java.util.Objects;
 public class BaosTypeAdapters {
 
     private static final List<BaosTypedObject<?>> TYPES = new ArrayList<>();
+
+
+    // register default adapters
+    static {
+        TYPES.add(new BooleanAdapter());
+        TYPES.add(new DoubleAdapter());
+        TYPES.add(new FloatAdapter());
+        TYPES.add(new LongAdapter());
+        TYPES.add(new NumberAdapter());
+        TYPES.add(new ShortAdapter());
+        TYPES.add(new StringAdapter());
+    }
 
     @SuppressWarnings("unchecked")
     static <T> BaosTypedObject<T> getFromClass(Class<T> clazz) {

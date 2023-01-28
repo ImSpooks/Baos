@@ -29,15 +29,15 @@ public class BaosOutputStream {
     }
 
     public void writeNumber(Number number) throws IOException {
-        if (number instanceof Integer){
+        if (number instanceof Integer) {
             this.write((byte) 0);
             this.writeInt((int) number);
         }
-        if (number instanceof Double){
+        if (number instanceof Double) {
             this.write((byte) 1);
             this.writeDouble((double) number);
         }
-        if (number instanceof Float){
+        if (number instanceof Float) {
             this.write((byte) 2);
             this.writeFloat((float) number);
         }
@@ -75,8 +75,6 @@ public class BaosOutputStream {
         byte[] bytes = s.getBytes(charset);
         this.writeInt(bytes.length);
         this.write(bytes);
-
-        //test
     }
 
     public void writeUUID(UUID uuid) throws IOException {
@@ -144,7 +142,7 @@ public class BaosOutputStream {
         }
     }
 
-    public void writeStringMap(Map<String, String> map) throws IOException {
+    public void writeStringToStringMap(Map<String, String> map) throws IOException {
         this.writeInt(map.size());
 
         for (String key : map.keySet()) {
@@ -153,12 +151,30 @@ public class BaosOutputStream {
         }
     }
 
-    public <T> void writeGenericStringMap(Map<String, T> map) throws IOException {
+    public <T> void writeStringToGenericMap(Map<String, T> map) throws IOException {
         this.writeInt(map.size());
 
         for (String key : map.keySet()) {
             this.writeString(key);
             this.writeTypePrefixed(map.get(key));
+        }
+    }
+
+    public void writeIntToIntMap(Map<Integer, Integer> map) throws IOException {
+        this.writeInt(map.size());
+
+        for (Integer key : map.keySet()) {
+            this.writeInt(key);
+            this.writeInt(map.get(key));
+        }
+    }
+
+    public <T> void writeIntToIntMap(Map<T, Integer> map, ValueTransformer<T, Integer> keyTransformer) throws IOException {
+        this.writeInt(map.size());
+
+        for (T t : map.keySet()) {
+            this.writeInt(keyTransformer.transform(t));
+            this.writeInt(map.get(t));
         }
     }
 
@@ -187,51 +203,22 @@ public class BaosOutputStream {
             }
             object.write0(o, this);
         }
-        /* else if (o instanceof String) {
-            this.write(0);
-            this.writeString((String) o);
-        } else if (o instanceof Integer) {
-            this.write(1);
-            this.writeInt((Integer) o);
-        } else if (o instanceof Long) {
-            this.write(2);
-            this.writeLong((Long) o);
-        } else if (o instanceof Double) {
-            this.write(3);
-            this.writeDouble((Double) o);
-        } else if (o instanceof List) {
-            List<?> list = (List<?>) o;
-            this.write(4);
-            this.writeInt(list.size());
-            for (Object inList : list) {
-                this.writeTypePrefixed(inList);
-            }
-        } else if (o instanceof Boolean) {
-            this.write(5);
-            this.writeBoolean((Boolean) o);
-        } else if (o instanceof UUID) {
-            this.write(6);
-            this.writeUUID((UUID) o);
-        } else if (o instanceof byte[]) {
-            this.write(7);
-            this.writeInt(((byte[]) o).length);
-            this.out.write((byte[]) o);
-        } else if (o instanceof Map) {
-            Map<?, ?> map = (Map<?, ?>) o;
-
-            this.write(8);
-            this.writeInt(map.size());
-            for (Map.Entry<?, ?> entry : map.entrySet()) {
-                this.writeTypePrefixed(entry.getKey());
-                this.writeTypePrefixed(entry.getValue());
-            }
-        }
-        else {
-            throw new UnsupportedOperationException("Unknown prefix type " + o.getClass().getSimpleName());
-        }*/
     }
 
     public DataOutputStream getOut() {
         return out;
+    }
+
+
+    /**
+     * Used to convert a value.
+     * for example a complex object to a primitive object, e.g Enum -> Integer
+     *
+     * @param <O> the old value
+     * @param <N> the new value
+     */
+    public interface ValueTransformer<O, N> {
+
+        N transform(O value);
     }
 }
