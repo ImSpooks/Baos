@@ -1,5 +1,7 @@
 package me.imspooks.baos.io;
 
+import me.imspooks.baos.ValueTransformer;
+
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -159,8 +161,7 @@ public class BaosInputStream {
     }
 
 
-
-    public Map<String, String> readStringMap() throws IOException {
+    public Map<String, String> readStringToStringMap() throws IOException {
         int size = this.readInt();
         Map<String, String> map = new HashMap<>();
         for (int i = 0; i < size; i++) {
@@ -169,11 +170,31 @@ public class BaosInputStream {
         return map;
     }
 
-    public <T> Map<String, T> readGenericStringMap(Class<T> obj) throws IOException {
+    public <T> Map<String, T> readStringToGenericMap(Class<T> obj) throws IOException {
         int size = this.readInt();
         Map<String, T> map = new HashMap<>();
         for (int i = 0; i < size; i++) {
             map.put(this.readString(), this.readTypePrefixed(obj));
+        }
+        return map;
+    }
+
+    public Map<Integer, Integer> readIntToIntMap() throws IOException {
+        int size = this.readInt();
+        Map<Integer, Integer> map = new HashMap<>();
+
+        for (int i = 0; i < size; i++) {
+            map.put(this.readInt(), this.readInt());
+        }
+        return map;
+    }
+
+    public <T> Map<T, Integer> readIntToIntMap(ValueTransformer<Integer, T> transformer) throws IOException {
+        int size = this.readInt();
+        Map<T, Integer> map = new HashMap<>();
+
+        for (int i = 0; i < size; i++) {
+            map.put(transformer.transform(this.readInt()), this.readInt());
         }
         return map;
     }

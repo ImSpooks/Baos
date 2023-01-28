@@ -1,5 +1,7 @@
 package me.imspooks.baos.io;
 
+import me.imspooks.baos.ValueTransformer;
+
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -207,18 +209,5 @@ public class BaosOutputStream {
 
     public DataOutputStream getOut() {
         return out;
-    }
-
-
-    /**
-     * Used to convert a value.
-     * for example a complex object to a primitive object, e.g Enum -> Integer
-     *
-     * @param <O> the old value
-     * @param <N> the new value
-     */
-    public interface ValueTransformer<O, N> {
-
-        N transform(O value);
     }
 }
